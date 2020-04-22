@@ -121,5 +121,5 @@ X.Y.Z-python3.6 | X.Y.Z | 3.6
 
 - [Prefect官网](https://www.prefect.io/)
 - [英版原文](https://docs.prefect.io/core/getting_started/why-not-airflow.html)
-- [联系作者](https://github.com/listen-lavender)
+- [联系译者](https://github.com/listen-lavender)
 

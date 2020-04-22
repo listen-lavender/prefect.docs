@@ -211,4 +211,4 @@ UI效果如下图：
 
 - [Prefect官网](https://www.prefect.io/)
 - [英版原文](https://docs.prefect.io/core/getting_started/first-steps.html)
-- [联系作者](https://github.com/listen-lavender)
+- [联系译者](https://github.com/listen-lavender)

@@ -28,4 +28,4 @@ Prefect将代码转化成一个健壮的，分布式的pipeline。开发者能�
 
 - [Prefect官网](https://www.prefect.io/)
 - [英版原文](https://docs.prefect.io/core/)
-- [联系作者](https://github.com/listen-lavender)
+- [联系译者](https://github.com/listen-lavender)
