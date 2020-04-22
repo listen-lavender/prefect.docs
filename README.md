@@ -1,4 +1,4 @@
-![prefect](prefect-core.svg)
+![Prefect Core](prefect-core.svg)
 
 Prefect Core是一种新型的工作流管理工具，使得构建数据pipeline非常容易，并且能轻松添加重试、日志、动态映射、缓存、失败告警以及更多的附加功能。
 
@@ -23,3 +23,9 @@ Prefect将代码转化成一个健壮的，分布式的pipeline。开发者能�
 > 
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prefect团队
 > 
+
+***
+
+- [Prefect官网](https://www.prefect.io/)
+- [英版原文](https://docs.prefect.io/core/)
+- [联系作者](https://github.com/listen-lavender)

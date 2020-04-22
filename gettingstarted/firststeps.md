@@ -195,15 +195,20 @@ Prefect的Core Python API是一个可以描述任务依赖性，甚至可以直�
 
 启动并配置Prefect Core服务后，导航到[http://localhost:8080](http://localhost:8080)以查看Perfict UI，如下图：
 
-![prefect](prefect-ui.png)
+![Prefect UI](prefect-ui.png)
 
 通过**.register()**可以在本地管理服务中注册flow，然后启动一个本地agent来支持Prefect server和flow业务代码之间的通信，然后还能在UI界面点击**Run**按钮触发flow执行，你会看到agent拉起task执行。UI会更新flow实例的状态。
 
 agent效果如下图：
 
-![prefect](prefect-agent.png)
+![Prefect Agent](prefect-agent.png)
 
 UI效果如下图：
 
-![prefect](prefect-flowrun.png)
+![Prefect Flow](prefect-flowrun.png)
 
+***
+
+- [Prefect官网](https://www.prefect.io/)
+- [英版原文](https://docs.prefect.io/core/getting_started/first-steps.html)
+- [联系作者](https://github.com/listen-lavender)

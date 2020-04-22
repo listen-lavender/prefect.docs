@@ -113,3 +113,8 @@ def signal_task(message):
 
 如果传递给该task的message是"stop！"，则该task将失败。
 
+***
+
+- [Prefect官网](https://www.prefect.io/)
+- [英版原文](https://docs.prefect.io/core/getting_started/next-steps.html)
+- [联系作者](https://github.com/listen-lavender)

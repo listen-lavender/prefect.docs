@@ -66,7 +66,7 @@ prefect server start
 
 得到如下docker container进程。
 
-![prefect](prefect-server.png)
+![Prefect Server](prefect-server.png)
 
 一旦所有组件启动，你可以访问[http://localhost:8080](http://localhost:8080)的UI。
 
@@ -116,3 +116,10 @@ latest-python3.6 | most recent PyPi version | 3.6
 X.Y.Z-python3.8 | X.Y.Z | 3.8
 X.Y.Z-python3.7 | X.Y.Z | 3.7
 X.Y.Z-python3.6 | X.Y.Z | 3.6
+
+***
+
+- [Prefect官网](https://www.prefect.io/)
+- [英版原文](https://docs.prefect.io/core/getting_started/why-not-airflow.html)
+- [联系作者](https://github.com/listen-lavender)
+
