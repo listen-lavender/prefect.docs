@@ -65,6 +65,7 @@ prefect server start
 ````
 
 得到如下docker container进程。
+
 ![prefect](prefect-server.png)
 
 一旦所有组件启动，你可以访问[http://localhost:8080](http://localhost:8080)的UI。

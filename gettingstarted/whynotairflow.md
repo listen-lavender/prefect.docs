@@ -59,7 +59,7 @@ Prefect的基本理念是，如果开发者能够保证编写的业务函数按�
 
 实现上述目标的基本方法是使用Prefect的功能API。在此模式下，Prefect的task行为类似于Python函数，可以直接定义输入输出和调用它。简单到只用一行Prefect装饰器代码，就将Python函数转换为task。像是Python函数一样自然，task之间的互相调用就地构建workflow，非常具有Python风格。这使得通常将已有业务代码和脚本转换成全栈Prefect的workflow是轻车熟路的。
 
-不用担心，Prefect同时还为Airflow用户提供Airflow风格的API，这种过程式风格对于构建复杂task依赖的workflow很有用，可以实现底层抽象控制。用户可以根据需求和倾向，来切换这两种风格使用。
+不用担心，Prefect同时还为Airflow用户提供Airflow风格的API，这种命令式风格对于构建复杂task依赖的workflow很有用，可以实现底层抽象控制。用户可以根据需求和倾向，来切换这两种风格使用。
 
 
 ## 调度和时间的关系

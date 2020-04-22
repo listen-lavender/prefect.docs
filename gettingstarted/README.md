@@ -1,0 +1,1 @@
+欢迎使用Prefect！本章简单的介绍了Prefect的安装，并针对Prefect的核心抽象给你一个通俗介绍，并且从工程实践总结的工具意义对比Prefect和Airflow，当然后面还有使用Prefect建设真实业务数据应用的完整介绍。
