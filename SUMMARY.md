@@ -8,7 +8,7 @@
     * [为什么是Prefect](gettingstarted/whyprefect.md)
     * [为什么不是Airflow](gettingstarted/whynotairflow.md)
 * [初级教程](tutorial/README.md)
-    * [ETL介绍](tutorial/eltintroduce.md)
+    * [ETL介绍](tutorial/etlintroduce.md)
     * [Prefect实现ETL](tutorial/etlwithprefect.md)
     * [添加Parameters](tutorial/addparameters.md)
     * [Failure处理](tutorial/handlingfailure.md)

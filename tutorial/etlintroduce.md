@@ -9,7 +9,7 @@
 > cd prefect/examples/tutorial
 > pip install -r requirements.txt
 > ````
-> 执行实例
+> 执行示例
 > ````bash
 > python 01_etl.py
 > ````
@@ -17,7 +17,7 @@
 
 ## Aircraft ETL(航班数据ETL应用)样例
 
-在本教程中，我们试图获取和存储有关航班实时数据的信息，以用于将来的分析。未来的分析需要从多个来源提取，清理和合并数据。这种业务场景，我们使用实时航班数据（位置信息）和其他关联数据（机场位置，班次，航线计划信息）。
+在本教程中，我们试图获取和存储有关实时航班数据的信息，以用于将来的分析。未来的分析需要从多个来源提取，清理和合并数据。这种业务场景，我们使用实时航班数据（位置信息）和其他关联数据（机场位置，班次，航线计划信息）。
 
 在引入任何Prefect概念镶嵌业务之前，让我们从解决问题的参考实现开始：
 
@@ -62,11 +62,7 @@ db.update_reference_data(ref_data)
 
 这些不良表现说明该脚本的设计欠佳。这里涉及的缺失保障处理实践是我们在Prefect中称之为“业务负向工程实践”的一种，或者是必须采取人工编码预防措施（侵入业务代码），以确保工作流运行良好。上面的代码几乎没有这些预防措施。
 
-> 
-> 接下来
-> 
-> 接下来，我们将以Aircraft ETL为例，并使用Prefect改进工作流行为。
-> 
+接下来，我们将以Aircraft ETL为例，并使用Prefect改进工作流行为。
 
 - [Prefect官网](https://www.prefect.io/)
 - [英版原文](https://docs.prefect.io/core/tutorial/01-etl-before-prefect.html)
