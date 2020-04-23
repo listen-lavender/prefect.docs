@@ -37,7 +37,7 @@ Airflow是用来为按照固定的时间调度运行偏静态的、task流转缓
 
 如果你的使用场景与上述任何一种相似，将无法直接使用Airflow，除非你在Airflow的抽象设计层面花费大量的工夫。因此，几乎每个中大型规模的公司最终都会编写自定义的DSL，或者维护大量专有插件来满足内部复杂多变的业务需求，又造成升级和故障维护的困难。
 
-Prefect汲取了多年从事Airflow相关项目的经验。产品的研究覆盖了数百用户和公司，发现了Airflow难以解决的隐患。然后通过支撑适合大多数业务场景的架构抽象设计，它最终实现了难以置信的轻量好用的接口。**注意，本文Airflow DAG和Prefect Flow都是workflow工作流的意思**
+Prefect汲取了多年从事Airflow相关项目的经验。产品的研究覆盖了数百用户和公司，发现了Airflow难以解决的隐患。然后通过支撑适合大多数业务场景的架构抽象设计，它最终实现了难以置信的轻量好用的接口。**注意，本文Airflow DAG和Prefect flow都是workflow工作流的意思**
 
 
 ## API
@@ -115,13 +115,13 @@ Airflow的调度器是Airflow的核心部分，对Airflow使用有性能影响�
 
 相对的，Prefect将这么多架构设计解耦到不同的独立模块中。
 
-### Prefect Flow Scheduling
+### Prefect flow Scheduling
 
-Prefect Flow Scheduling（workflow可执行实例调度）是很轻量的，只需要简单创建一个新的可执行实例，并且设置成Scheduled状态。这就是Prefect Flow Scheduling实际的唯一责任，调度器绝对不会干涉任何workflow的依赖逻辑。
+Prefect flow Scheduling（workflow可执行实例调度）是很轻量的，只需要简单创建一个新的可执行实例，并且设置成Scheduled状态。这就是Prefect flow Scheduling实际的唯一责任，调度器绝对不会干涉任何workflow的依赖逻辑。
 
-### Prefect Flow Logic
+### Prefect flow Logic
 
-Prefect Flow Logic（workflow的依赖设置）是独立的编码部分，依赖逻辑绝不侵入业务，也不会把workflow相关的状态管理掺杂到业务里面。作为证据，你可以在本地运行空的workflow的情况，发现workflow进程几乎没有资源开销。
+Prefect flow Logic（workflow的依赖设置）是独立的编码部分，依赖逻辑绝不侵入业务，也不会把workflow相关的状态管理掺杂到业务里面。作为证据，你可以在本地运行空的workflow的情况，发现workflow进程几乎没有资源开销。
 
 ````bash
 # run your first Prefect flow from the command line
@@ -131,10 +131,10 @@ python -c "from prefect import Flow; f = Flow('empty'); f.run()"
 
 ### Prefect Task Scheduling
 
-当Prefect Flow的可执行实例在运行期间，只管调度属于自己的task，这非常重要：
+当Prefect flow的可执行实例在运行期间，只管调度属于自己的task，这非常重要：
 
 - 从workflow的架构抽象看，workflow的可执行实例对象是唯一适合接管这个责任的
-- 减轻中枢调度器（Prefect Flow Scheduling）的负担
+- 减轻中枢调度器（Prefect flow Scheduling）的负担
 - 针对各种独特场景做决策，例如动态生成task
 - 将执行细节交给Dask等外部系统负责
 
