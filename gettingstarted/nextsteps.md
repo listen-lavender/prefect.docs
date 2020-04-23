@@ -79,7 +79,7 @@ flow.set_reference_tasks([submitted])
 
 ## 信号（Signal）
 
-Prefect状态系统允许用户通过触发器和关联task来设置高级控制。每一个task都会根据**run()**函数的执行进入最终状态：如果该函数正常完成，task进入**Success**状态；如果函数遇到错误，task进入**Failed**状态。贴心的是，Prefect通过**signal**机制给用户提供了操作task状态的细粒度控制。
+Prefect状态系统允许用户通过触发器和关联task来设置高级控制。每一个task都会根据**.run()**函数的执行进入最终状态：如果该函数正常完成，task进入**Success**状态；如果函数遇到错误，task进入**Failed**状态。贴心的是，Prefect通过**signal**机制给用户提供了操作task状态的细粒度控制。
 
 信号（signal）是告诉Prefect引擎应将task立即移至特定状态的方式。
 

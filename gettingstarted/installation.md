@@ -76,7 +76,7 @@ prefect server start
 prefect agent start
 ````
 
-最后通过一行代码如下flow.register()来注册任意的工作流。更多细节参见基础设施文档。简单示例代码如下：
+最后通过一行代码如下**flow.register()**来注册任意的工作流。更多细节参见基础设施文档。简单示例代码如下：
 
 ````python
 #!/usr/bin/env python

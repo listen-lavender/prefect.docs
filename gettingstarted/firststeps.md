@@ -50,7 +50,7 @@ def say_hello(person: str) -> None:
 
 ### 面向对象风格的Task类
 
-有时候，需要设计比单个函数更复杂的类。可以通过继承Prefect Task基类并实现**__init__()**和**run()**方法来设计面向对象的子类化task。下面是我们希望**add**task具有自定义默认值的示例：
+有时候，需要设计比单个函数更复杂的类。可以通过继承Prefect Task基类并实现**.__init__()**和**.run()**方法来设计面向对象的子类化task。下面是我们希望**add**task具有自定义默认值的示例：
 
 ````Python
 from prefect import Task
