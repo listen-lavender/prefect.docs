@@ -14,7 +14,7 @@
     * [失败处理](tutorial/handlingfailure.md)
     * [调度执行](tutorial/runonschedule.md)
     * [水平扩展](tutorial/scalingout.md)
-    * [下一步](tutorial/nextsteps.md)
+    * [task更多特性](tutorial/nextsteps.md)
 * [核心概念](coreconcepts/README.md)
     * [Tasks.任务](coreconcepts/tasks.md)
     * [Flows.流](coreconcepts/flows.md)
