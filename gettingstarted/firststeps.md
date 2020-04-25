@@ -20,7 +20,7 @@ def say_hello():
     print("Hello, world!")
 ````
 
-Prefect没有限制一个task能做多少事情。一般来说，相对于大型任务，我们鼓励微型任务，每一个task最多就执行工作流解耦后的逻辑步骤。这是因为prefict引擎处理每个任务需要做很多工作，包括在每个任务运行后检查状态。因此，越多的微型任务，Prefect的作用越大。当然你也可以把整个工作流做成一个大型task，这样Prefect引擎对于你的业务系统就难以发挥风险管理工作。
+Prefect没有限制一个task能做多少事情。一般来说，相对于大型task，我们鼓励微型task，每一个task最多就执行工作流解耦后的逻辑步骤。这是因为prefict引擎处理每个task需要做很多工作，包括在每个task运行后检查状态。因此，越多的微型task，Prefect的作用越大。当然你也可以把整个工作流做成一个大型task，这样Prefect引擎对于你的业务系统就难以发挥风险管理工作。
 
 ### Task的输入和输出
 
@@ -70,19 +70,19 @@ class AddTask(Task):
 add = AddTask(default=1)
 ````
 
-注意子类化task是非常强大的，但需要编写显式代码。如上所述，我们必须初始化任务示例才能使用它。当我们使用**@task**装饰器时，它返回了一个已经初始化的task对象。
+注意子类化task是非常强大的，但需要编写显式代码。如上所述，我们必须初始化task示例才能使用它。当我们使用**@task**装饰器时，它返回了一个已经初始化的task对象。
 
-请注意，子类化task更强大，但需要更明确的代码。如上所示，我们必须初始化任务实例才能使用它。当我们使用**@task**时，它也是返回了一个已经初始化的task对象。
+请注意，子类化task更强大，但需要更明确的代码。如上所示，我们必须初始化task实例才能使用它。当我们使用**@task**时，它也是返回了一个已经初始化的task对象。
 
 ## Flow（工作流）
 
-在Prefect中，flow用于描述任务之间的依赖关系，例如它们的顺序或者如何传递数据。如果把task看作函数，那么可以将flow视为以有趣方式组合它们的脚本。
+在Prefect中，flow用于描述task之间的依赖关系，例如它们的顺序或者如何传递数据。如果把task看作函数，那么可以将flow视为以有趣方式组合它们的脚本。
 
 ### 函数式API
 
 构建flow的最简单方法是使用Prefect的函数式API。创建一个flow作为上下文管理器，并将task当做常规函数一样按依赖有序调用。Prefect flow将跟踪每个函数调用，并构建一个表示工作流的计算图。关键的是，此时没有实际执行任何task。
 
-下面是一个flow，它使用我们前面编写的**add**task将几个数字相加。注意任务是如何接受int数据甚至其他task作为输入；Prefict自动在工作流计算图中创建适当的连接（或者称之为“边”）。此外，请注意，我们调用add两次，在flow中生成两个不同的task运行实例：
+下面是一个flow，它使用我们前面编写的**add**task将几个数字相加。注意task是如何接受int数据甚至其他task作为输入；Prefict自动在工作流计算图中创建适当的连接（或者称之为“边”）。此外，请注意，我们调用add两次，在flow中生成两个不同的task运行实例：
 
 ````Python
 from prefect import Flow
@@ -94,7 +94,7 @@ with Flow("My first flow!") as flow:
 
 ### 运行Flow
 
-一旦flow创建了，我们通过调用**flow.run()**来运行它。在这个场景中，结束State是Success，我们还可以手工检查每个任务的状态和结果：
+一旦flow创建了，我们通过调用**flow.run()**来运行它。在这个场景中，结束State是Success，我们还可以手工检查每个task的状态和结果：
 
 ````Python
 state = flow.run()
@@ -187,7 +187,7 @@ flow添加**add**task与**print "say hello"**task组合在一起，使用状态�
 
 ## 编排Flow
 
-Prefect的Core Python API是一个可以描述任务依赖性，甚至可以直接从的Python shell、Jupyter Notebook、长期执行脚本编排flow的功能强大的工具。但是，也可以利用现成的状态数据库和UI后端，这样能完美地编排任何Prefect流，并使可视化监控变得容易。
+Prefect的Core Python API是一个可以描述task依赖性，甚至可以直接从的Python shell、Jupyter Notebook、长期执行脚本编排flow的功能强大的工具。但是，也可以利用现成的状态数据库和UI后端，这样能完美地编排任何Prefect流，并使可视化监控变得容易。
 
 基于Prefect Core提供了和高可用的生产级后台产品Prefect云平台对应的开源轻量级版本。
 

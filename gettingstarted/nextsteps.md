@@ -65,10 +65,7 @@ def tear_down_cluster(cluster):
 
 这说明了一个重要的问题：工作流管理系统和flow的语义不一定和业务逻辑一致。其实，用户是希望如果作业没有运行，业务流程表征应该是失败了，同时工作流在系统层面（包括清理task）成功结束！
 
-Prefect introduces a mechanism called "reference tasks" to solve this conundrum. Flows remain in a Running state until all of their tasks enter Finished states. At that time, the Flow essentially decides its own final state by applying an all_successful trigger to its reference tasks. By default, the reference tasks are the terminal tasks, but users can set them to be any tasks they want.
-
-
-Prefect引入了一种称之为**关联任务**的机制来解决问题。在所有task都进入**Finished**状态之前，flow将保持**Running**状态。那时flow实际通过将**all_successful**触发器应用于其关联任务来决定自己的最终状态。默认情况下，flow状态表征的关联task是最后一个task，但开发者可以将其指定为flow的任意一个或多个task，例如如下代码。
+Prefect引入了一种称之为**状态关联task**的机制来解决问题。在所有task都进入**Finished**状态之前，flow将保持**Running**状态。那时flow实际通过将**all_successful**触发器应用于其状态关联task来决定自己的最终状态。默认情况下，flow状态表征的关联task是最后一个task，但开发者可以将其指定为flow的任意一个或多个task，例如如下代码。
 
 
 ````Python

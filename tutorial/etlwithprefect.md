@@ -119,7 +119,7 @@ with Flow("Aircraft-ETL") as flow:
     load_reference_data(reference_data)
     load_live_data(transformed_live_data)
 ````
-注意：此时没有实际执行任何任务，因为使用**Flow(...):**上下文管理器允许Prefect推理出任务之间的依赖关系，并构建稍后将执行的执行图。这个业务场景的执行图如下所示：
+注意：此时没有实际执行任何task，因为使用**Flow(...):**上下文管理器允许Prefect推理出task之间的依赖关系，并构建稍后将执行的执行图。这个业务场景的执行图如下所示：
 
 ![Prefect Aircraft ETL](prefectetl.png)
 
@@ -140,7 +140,7 @@ flow.run()
 > 
 > Prefect Task库
 > 
-> Prefect提供一个任务库，其中包含常见的task实现以及与Kubernetes，GitHub，Slack，Docker，AWS，GCP等的集成！
+> Prefect提供一个task库，其中包含常见的task实现以及与Kubernetes，GitHub，Slack，Docker，AWS，GCP等的集成！
 > 
 
 接下来，让我们对flow进行参数化以使其复用性更好。

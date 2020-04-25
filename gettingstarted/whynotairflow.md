@@ -251,10 +251,10 @@ flow.run(p=99) # uses the value 99
 除了参数化的workflow之外，经常遇到workflow内部有task的逻辑需要被重复运行几次的场景。假设task A从数据库查询所有的新客户列表，需要把里面的每一个客户ID交给另一个task做一些事务处理。在Airflow中，只有一个选择，实现一个下游task B，该task B使用客户ID列表，并循环一一处理。这种方式有以下缺点：
 
 - UI操作界面无法可视化task内部循环造成的动态负载，执行过程不可见
-- 如果任何一条数据记录执行失败，则整个任务失败或者被丢弃形成业务黑洞
+- 如果任何一条数据记录执行失败，则整个task失败或者被丢弃形成业务黑洞
 - 重试的话，还要考虑规模和实现幂等逻辑，因为失败中途重试，系统很难理解哪些数据已经处理过，需要跳过不处理
 
-由于这是一种常见场景，因此Prefect将其专门抽象成称之为task mapping的功能。task mapping是指能够运行时根据上游task的输出结果来动态生成不同数量的下游task的能力。映射强大到可以在映射过的任务继续映射，从而轻松创建并行管道。而归纳收集结果就是将mapped task作为Parameter输入到non-mapped task这么简单。考虑一个简单例子，生成一个4项item的list，遍历每一项item两次做+1处理并设置item，然后计算list的item之和。
+由于这是一种常见场景，因此Prefect将其专门抽象成称之为task mapping的功能。task mapping是指能够运行时根据上游task的输出结果来动态生成不同数量的下游task的能力。映射强大到可以在映射过的task继续映射，从而轻松创建并行管道。而归纳收集结果就是将mapped task作为Parameter输入到non-mapped task这么简单。考虑一个简单例子，生成一个4项item的list，遍历每一项item两次做+1处理并设置item，然后计算list的item之和。
 
 ````Python
 from prefect import task, Flow
@@ -281,7 +281,7 @@ f.run()
 
 ````
 
-该workflow运行实例明确有10个Prefect task，1个是list创建，8个是4项item X 2次+1映射处理，还有一个求和规约。任务映射提供许多好处：
+该workflow运行实例明确有10个Prefect task，1个是list创建，8个是4项item X 2次+1映射处理，还有一个求和规约。task映射提供许多好处：
 
 - mapping模式易于在workflow中表达
 - 每一个动态产生的task都是单独实例，意味着可以独立于其他task单独重试告警
@@ -335,7 +335,7 @@ f.run()
 
 另外，在Prefect中，workflow作为参数简单传递给FlowRunner可以直接本地执行。此外，这类接口都提供了丰富的额外参数，专门用于帮助测试流程，还贴心的包括一种手动指定上游task任意状态的方法。
 
-例如，要确保测试逻辑适用于单个任务。因为Prefect返回上游task的结果是组合完整的状态对象（包括数据、异常状态和重试次数等信息），这样你能通过task_states关键字参数模拟传递所有的上游任务状态，进而你可以只对关心的task返回状态做断言。
+例如，要确保测试逻辑适用于单个task。因为Prefect返回上游task的结果是组合完整的状态对象（包括数据、异常状态和重试次数等信息），这样你能通过task_states关键字参数模拟传递所有的上游task状态，进而你可以只对关心的task返回状态做断言。
 
 
 ## UI操作界面
