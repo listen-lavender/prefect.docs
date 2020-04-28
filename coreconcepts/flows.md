@@ -35,7 +35,7 @@ with Flow('My Functional Flow') as flow:
 ````
 
 > 
-> 将子类化task与函数式API结合使用
+> **将子类化task与函数式API结合使用**
 > 
 > 请注意，为了通过函数式API使用Task子类（与**@task**装饰器相反），需要在调用该类之前实例化该类：
 > 
@@ -78,7 +78,7 @@ flow.visualize()
 ````
 
 > 
-> 提醒
+> **提醒**
 > 
 > **flow.set_dependencies()**和**task.set_dependencies()**（后者仅在活动的flow上下文中可用）是命令式API的主要入口点。flow还提供一些底层方法，例如**.add_task()**和**.add_edge()**，可用于直接操作工作流计算图。
 > 
@@ -134,7 +134,7 @@ flow的终结者task是指没有下游依赖的task，它们是最后运行的ta
 在flow的所有终结者task完成之前，不会将其视为**Finished**，否则将保持表示**Running**状态。默认情况下，终结者task也是flow的状态关联task，因此可以决定其状态。
 
 > 
-> 执行顺序
+> **执行顺序**
 > 
 > Prefect除了上游依赖task状态确定之前不会运行后续的task，不保证flow的task的执行顺序，。因此，您可能有一个终端task实际上在流程中的其他task之前运行，只要它不依赖于那些task即可。
 > 
@@ -154,7 +154,7 @@ assert flow.reference_tasks() == {c}
 ````
 
 > 
-> 什么时候应该自定义状态关联task？
+> **什么时候应该自定义状态关联task？**
 > 
 > 通常，flow的终结者task是默认的合适的状态关联task。但是，有时并非如此。
 > 

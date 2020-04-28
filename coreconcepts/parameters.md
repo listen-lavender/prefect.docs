@@ -17,7 +17,7 @@ flow.run() #prints 3
 ````
 
 > 
-> 参数（Parameter）名称
+> **参数（Parameter）名称**
 > 
 > 尽管参数（Parameter）可以具有任何名称，但是flow中只能有一个具有该名称的参数。这是通过要求Parameter的slug（唯一标识）与其名称相同来实现的。
 > 

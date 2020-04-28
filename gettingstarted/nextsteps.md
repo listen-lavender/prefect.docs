@@ -52,7 +52,7 @@ def tear_down_cluster(cluster):
 所有其他代码保持不变。现在**tear_down_cluster**task实例一定会产生并执行，即使是上游task失败了。
 
 > 
-> task永远不会在上游task完成之前执行
+> **task永远不会在上游task完成之前执行**
 > 
 > Prefect永远不会在上游task完成之前运行task。这就是为什么**all_finished**和**always_run**触发器是同义词。
 > 
@@ -88,7 +88,7 @@ Prefect状态系统允许用户通过触发器和关联task来设置高级控制
 另一个有用的signal是SKIP信号。一个task被跳过，意味着它的下游task也会被跳过，除非专门设置了skip_on_upstream_skip = False。这意味着用户在条件不满足时，可以设置整个工作流分支都能被跳过。
 
 > 
-> SKIP被当做SUCCESS对待。
+> **SKIP被当做SUCCESS对待。**
 > 
 > 当一个task被跳过时，通常将其视为执行成功。这是因为仅当用户特意引入跳过处理逻辑时，task才会跳过。因此结果符合用户的设计意图。
 > 

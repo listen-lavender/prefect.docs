@@ -14,7 +14,7 @@
 通过处理相对少量的task状态，Prefect工作流可以驾驭这种复杂性。
 
 > 
-> 只有运行实例才有状态
+> **只有运行实例才有状态**
 > 
 > 我们经常提到flow或task的状态，其实是指flow运行或task运行的状态。flow和task是描述系统行为的模板。只有当我们运行系统时，它才会处于一种状态。因此，尽管我们可能将task称为**Running**或**Success**，但实际上是指某task的特定实例处于该状态。
 > 
@@ -44,7 +44,7 @@ Pending(message="This task is waiting to start")
 状态结果携带与状态关联的数据。对于task**Success**状态，这是task产生的数据。对于**Failed**状态，通常是Python Exception对象导致的失败。
 
 > 
-> 失败的结果
+> **失败的结果**
 > 
 > 因为所有状态对象都有一个结果字段，所以这意味着task可以处理失败的上游task的结果。这很令人吃惊，但功能强大。例如，在失败的task之后运行的task可以查看上游task失败的结果，以了解失败的确切原因。跳过task之后的task可能会收到一条说明为什么要跳过该上游task的消息。
 > 
@@ -58,7 +58,7 @@ Pending(message="This task is waiting to start")
 在执行流水线的每个阶段，当前状态决定将要采取的行动。例如，如果您尝试以**Success**状态运行task，它将退出流水线，因为**Finished**状态永远不会重新运行。如果您尝试以**Retrying**状态运行task，则仅在该状态的重试计划时间已经到了，task才会再次进行。这样，状态将携带Prefect引擎用来做出有关工作流逻辑决策的所有关键信息。
 
 > 
-> 元状态
+> **元状态**
 > 
 > 实际上，存在第四种状态，称为**MetaState**，但它不会影响执行流水线。取而代之的是，Prefect使用元状态来扩展现有状态的附加信息。例如，两个元状态为“Submitted”和“Queued​​”。这些用于以使原始状态可恢复的方式“包装”其他状态。例如，可以将**Scheduled**状态置于**Submitted**状态，用来说明执行已提交，但是引擎需要原始的**Scheduled**来执行运行时逻辑。通过将**Scheduled**状态与**Submitted**元状态包装在一起，而不是替换它，引擎能恢复所需的原始信息。
 > 

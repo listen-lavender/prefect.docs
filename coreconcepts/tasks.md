@@ -31,7 +31,7 @@ class HTTPGetTask(Task):
 所有Task子类都必须具有run()方法。
 
 > 
-> task可以独立运行
+> **task可以独立运行**
 > 
 > 任何时候都可以调用task的**.run()**进行测试
 > 
@@ -43,7 +43,7 @@ class HTTPGetTask(Task):
 task支持各种功能参数，这些参数可以提供给**Task**类构造函数或**@task**装饰器。有关完整说明，请参阅[Task API文档](https://docs.prefect.io/api/latest/core/task.html)。
 
 > 
-> task该设计成多大？
+> **task该设计成多大？**
 > 
 > 人们经常想知道每个task要编写多少代码。
 > 
@@ -66,7 +66,7 @@ Task(max_retries=3, retry_delay=datetime.timedelta(minutes=10))
 在执行Prefect task之前，它会通过**触发器函数**以决定是否应该开始运行它。触发器是接收上游task状态并在下游task应运行时返回True，否则返回False（或引发错误）的函数。如果task的触发器失败并且未引发更具体的错误，则该task将进入**TriggerFailed**状态，这是**Failed**状态的一种更具体的类型，表明task无法运行，但是由于触发器问题而不是task自身的原因。
 
 > 
-> 跳过被视为成功
+> **跳过被视为成功**
 > 
 > 在Prefect中，将跳过的task视为成功。这是因为仅在用户要求时才进行跳过，因此它们表示用户设计意图的“成功”执行。但是，默认情况下，跳过的task的下游task也会被跳过：除非跳过的task接收**skip_on_upstream_skip=False**，否则task的跳过状态会沿着链路传播。
 > 
@@ -132,7 +132,7 @@ These operators automatically add new tasks to the active flow context.
 这些操作符自动将新task添加到flow上下文中。
 
 > 
-> 运算符验证
+> **运算符验证**
 > 
 > 由于Prefect flow在创建时不会执行，因此Prefect无法验证是否将运算符应用于兼容类型。例如，您可以用产生整数的task表达式减去产生列表的task。这将在运行时发生错误，而不是在task定义期间。
 > 
@@ -183,7 +183,7 @@ with Flow('Indexing Flow') as flow:
 这会自动将接收x作为输入并尝试执行x['a']的**GetItem**task添加到flow，该task的结果存储为y。
 
 > 
-> key验证
+> **key验证**
 > 
 > 因为Prefect flow是在运行时执行，Prefect无法提前验证索引键是否可用。所以，Prefect将允许你按任意值索引任何task。如果flow实际运行时该键不存在，则会引发运行时错误。
 > 

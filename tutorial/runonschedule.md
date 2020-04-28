@@ -36,7 +36,7 @@ with Flow("Aircraft-ETL", schedule=schedule) as flow:
 当调用**flow.run()**时，我们的工作流将永远不会停止，总是每分钟开始一次新的执行。
 
 > 
-> Schedules附加信息。
+> **Schedules附加信息。**
 > 
 > 有多种方法可以配置调度计划以满足各种需求。有关Schedules的更多信息，请参见[后续文档](https://docs.prefect.io/core/concepts/schedules.html#schedules)。
 > 
