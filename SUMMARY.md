@@ -25,7 +25,7 @@
     * [Logging.日志](coreconcepts/logging.md)
     * [Mapping.映射](coreconcepts/mapping.md)
     * [通知和状态处理器](coreconcepts/notificationstatehandler.md)
-    * [持久化和缓存](coreconcepts/persistcache.md)
+    * [持久化缓存](coreconcepts/persistcache.md)
     * [结果处理器](coreconcepts/resulthandler.md)
     * [Schedule.调度计划](coreconcepts/schedules.md)
     * [Secret.秘钥](coreconcepts/secrets.md)
