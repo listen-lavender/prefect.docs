@@ -9,7 +9,7 @@
 
 ## 如果失败了...
 
-现在有一个有效的ETL工作流，让我们采取进一步的措施以确保其健壮性。**extract_**task正在用外部API发出Web请求，以获取数据。如果API短期不可用怎么办？或者单个请求由于未知原因超时？Prefect task可以在失败时重试；让我们将其添加到我们的**extract_**task中：
+现在有一个有效的ETL工作流，让我们采取进一步的措施以确保其健壮性。**extract_** task正在用外部API发出Web请求，以获取数据。如果API短期不可用怎么办？或者单个请求由于未知原因超时？Prefect task可以在失败时重试；让我们将其添加到我们的**extract_** task中：
 
 ````Python
 from datetime import timedelta

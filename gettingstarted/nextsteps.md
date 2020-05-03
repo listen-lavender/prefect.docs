@@ -39,7 +39,7 @@ with Flow("Spark") as flow:
     tear_down_cluster.set_upstream(submitted)
 ````
 
-当我们运行此flow时，只要Spark作业成功运行，一切业务正常。但是如果作业失败，**run_spark_job**task实例将设置为**Failed**状态。因为**tear_down_cluster**task上的默认触发器是**all_successful**，所以该task被触发失败（相当于当前task Failed的特殊情况，引起下游task通知失败的不是运行时错误，是触发器条件）。
+当我们运行此flow时，只要Spark作业成功运行，一切业务正常。但是如果作业失败，**run_spark_job** task实例将设置为**Failed**状态。因为**tear_down_cluster** task上的默认触发器是**all_successful**，所以该task被触发失败（相当于当前task Failed的特殊情况，引起下游task通知失败的不是运行时错误，是触发器条件）。
 
 为了解决该类问题，只需在定义task时调整触发器即可。当前情况，使用**always_run**触发器，它是**all_finished**的别名：
 
@@ -49,7 +49,7 @@ def tear_down_cluster(cluster):
     tear_down(cluster)
 ````
 
-所有其他代码保持不变。现在**tear_down_cluster**task实例一定会产生并执行，即使是上游task失败了。
+所有其他代码保持不变。现在**tear_down_cluster** task实例一定会产生并执行，即使是上游task失败了。
 
 > 
 > **task永远不会在上游task完成之前执行**
@@ -59,7 +59,7 @@ def tear_down_cluster(cluster):
 
 ## flow状态表征的关联task（Reference Task）
 
-前面，我们使用触发器来确保**tear_down_cluster**task始终运行。最后一个task实例一定会成功，让我们选择始终得到成功运行的结果。实际上这是一个工程实践问题，因为工作流管理系统根据最后一个task的状态来设置整个flow的状态。于是，我们要运行的作业失败了，最后一个task**tear_down_cluster**也将运行并成功，或者相反。
+前面，我们使用触发器来确保**tear_down_cluster** task始终运行。最后一个task实例一定会成功，让我们选择始终得到成功运行的结果。实际上这是一个工程实践问题，因为工作流管理系统根据最后一个task的状态来设置整个flow的状态。于是，我们要运行的作业失败了，最后一个task**tear_down_cluster**也将运行并成功，或者相反。
 
 对业务来说，这是一个严重问题：工作流管理系统和一般的工作流具有不一定与业务逻辑一致的语义
 

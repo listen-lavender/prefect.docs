@@ -7,7 +7,7 @@
 > ````
 > 
 
-上一节教程中，我们将Aircraft ETL脚本重构为Prefect flow。但是，**extract_live_data**task是硬编码，只能提取特定区域内的航班数据，在这种情况下，Dulles国际机场周围的半径为200公里：
+上一节教程中，我们将Aircraft ETL脚本重构为Prefect flow。但是，**extract_live_data** task是硬编码，只能提取特定区域内的航班数据，在这种情况下，Dulles国际机场周围的半径为200公里：
 
 ````Python
 @task

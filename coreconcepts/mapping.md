@@ -70,7 +70,7 @@ with Flow('simple map') as flow:
     mapped_result = add_ten.map([1, 2, 3])
 ````
 
-运行flow时，**mapped_result**task的结果将为[11，12，13]。
+运行flow时，**mapped_result** task的结果将为[11，12，13]。
 
 ## 迭代映射（map）
 
@@ -88,7 +88,7 @@ with Flow('iterated map') as flow:
     mapped_result_2 = add_ten.map(mapped_result)
 ````
 
-运行此flow时，**mapped_result_2**task的结果将为[21、22、23]，这是两次应用映射函数的结果。
+运行此flow时，**mapped_result_2** task的结果将为[21、22、23]，这是两次应用映射函数的结果。
 
 > 
 > 无需规约（reduce）
@@ -145,7 +145,7 @@ The unmapped function can be applied to any number of input arguments. This mean
 
 每当映射task被下游task规约时，Prefect都会将映射task子级视为该下游的task的输入。这意味着，除其他外，触发器函数将应用于所有映射的子级，而不是映射的父级。
 
-如果规约task具有**all_successful**task，但是映射的子级之一失败了，则规约task的触发器将变成失败。这与已手动创建映射的子级代并将其传递给规约task的行为相同。跳过状态也会发生类似的行为。
+如果规约task具有**all_successful** task，但是映射的子级之一失败了，则规约task的触发器将变成失败。这与已手动创建映射的子级代并将其传递给规约task的行为相同。跳过状态也会发生类似的行为。
 
 ***
 

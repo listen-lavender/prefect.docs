@@ -50,7 +50,7 @@ def say_hello(person: str) -> None:
 
 ### 面向对象风格的Task类
 
-有时候，需要设计比单个函数更复杂的类。可以通过继承Prefect Task基类并实现**.__init__()**和**.run()**方法来设计面向对象的子类化task。下面是我们希望**add**task具有自定义默认值的示例：
+有时候，需要设计比单个函数更复杂的类。可以通过继承Prefect Task基类并实现**.__init__()**和**.run()**方法来设计面向对象的子类化task。下面是我们希望**add** task具有自定义默认值的示例：
 
 ````Python
 from prefect import Task
@@ -82,7 +82,7 @@ add = AddTask(default=1)
 
 构建flow的最简单方法是使用Prefect的函数式API。创建一个flow作为上下文管理器，并将task当做常规函数一样按依赖有序调用。Prefect flow将跟踪每个函数调用，并构建一个表示工作流的计算图。关键的是，此时没有实际执行任何task。
 
-下面是一个flow，它使用我们前面编写的**add**task将几个数字相加。注意task是如何接受int数据甚至其他task作为输入；Prefict自动在工作流计算图中创建适当的连接（或者称之为“边”）。此外，请注意，我们调用add两次，在flow中生成两个不同的task运行实例：
+下面是一个flow，它使用我们前面编写的**add** task将几个数字相加。注意task是如何接受int数据甚至其他task作为输入；Prefict自动在工作流计算图中创建适当的连接（或者称之为“边”）。此外，请注意，我们调用add两次，在flow中生成两个不同的task运行实例：
 
 ````Python
 from prefect import Flow
@@ -171,7 +171,7 @@ second_add.bind(x=add, y=100, flow=flow)
 say_hello.bind(person=name, flow=flow)
 ````
 
-flow添加**add**task与**print "say hello"**task组合在一起，使用状态依赖（非数据依赖）指定在第二个**add**task 完成之后才运行**print "say hello"**task。
+flow添加**add** task与**print "say hello"** task组合在一起，使用状态依赖（非数据依赖）指定在第二个**add** task 完成之后才运行**print "say hello"** task。
 
 也能使用Prefect的函数式API创建状态依赖。当像调用函数一样调用task，传递task列表到一个特定关键字参数**upstream_tasks**，Prefect将自动对每个task调用**set_upstream()**。
 

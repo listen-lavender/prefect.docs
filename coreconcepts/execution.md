@@ -19,7 +19,7 @@
 > 
 > 使用**manual_only**触发器暂停flow
 > 
-> **manual_only**始终将task插入**Paused**状态，因此该flow永远不会自动运行**manual_only**task。这允许用户在运行中暂停flow。要恢复，请将task插入**Resume**状态，这将被视为没有上游task的根task，并完全跳过触发器函数的执行检查。
+> **manual_only**始终将task插入**Paused**状态，因此该flow永远不会自动运行**manual_only** task。这允许用户在运行中暂停flow。要恢复，请将task插入**Resume**状态，这将被视为没有上游task的根task，并完全跳过触发器函数的执行检查。
 > 
 
 例如，假设我们要用一个根task构造一个flow；如果此task成功，则我们要运行task B。如果失败，我们将要运行task C。我们可以通过使用触发器来完成此模式：

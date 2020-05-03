@@ -180,7 +180,7 @@ with Flow('Indexing Flow') as flow:
     y = x['a']
 ````
 
-这会自动将接收x作为输入并尝试执行x['a']的**GetItem**task添加到flow，该task的结果存储为y。
+这会自动将接收x作为输入并尝试执行x['a']的**GetItem** task添加到flow，该task的结果存储为y。
 
 > 
 > **key验证**
