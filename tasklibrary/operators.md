@@ -1,6 +1,6 @@
-该模块中的任务可用于表示内置操作，包括算术，索引和逻辑比较。
+该模块中的task可用于表示内置操作，包括算术，索引和逻辑比较。
 
-通常，用户不会手动实例化这些任务。当用户将内联Python运算符应用于任务和另一个值时，它们将自动应用。
+通常，用户不会手动实例化这些task。当用户将内联Python运算符应用于task和另一个值时，它们将自动应用。
 
 例如：
 
@@ -13,7 +13,7 @@ Task()['x'] # applies GetItem
     
 ### GetItem（获取项）
 
-任务助手，用于检索上游任务结果的特定索引。
+task助手，用于检索上游task结果的特定索引。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/operators.html#prefect-tasks-core-operators-getitem)
 

@@ -52,6 +52,7 @@
     * [Redis](tasklibrary/redis.md)
     * [RSS](tasklibrary/rss.md)
     * [Shell](tasklibrary/shell.md)
+    * [Slack](tasklibrary/slack.md)
     * [Snowflake](tasklibrary/snowflake.md)
     * [SQLite](tasklibrary/sqlite.md)
     * [Strings.字符串](tasklibrary/strings.md)
