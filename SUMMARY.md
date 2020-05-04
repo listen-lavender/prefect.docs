@@ -47,7 +47,6 @@
     * [GCP.谷歌云](tasklibrary/gcp.md)
     * [GitHub](tasklibrary/github.md)
     * [Kubernetes](tasklibrary/kubernetes.md)
-    * [Notifications.通知](tasklibrary/notifications.md)
     * [Operators.运算符](tasklibrary/operators.md)
     * [Postgres](tasklibrary/postgres.md)
     * [Redis](tasklibrary/redis.md)
