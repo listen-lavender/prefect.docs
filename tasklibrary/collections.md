@@ -16,25 +16,25 @@ set_of_tasks = {Task(), Task(), Task()}
 count_more_than_2(inputs=set_of_tasks)
 ````
 
-## List
+### List
 
 自动将其输入合并到Python列表中。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/collections.html#prefect-tasks-core-collections-tuple)
 
-## Tuple
+### Tuple
 
 自动将其输入组合到Python元组中。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/collections.html#prefect-tasks-core-collections-tuple)
 
-## Set
+### Set
 
 自动将其输入组合到Python集合中。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/collections.html#prefect-tasks-core-collections-set)
 
-## Dict
+### Dict
 
 自动将其输入组合到Python字典中。
 
