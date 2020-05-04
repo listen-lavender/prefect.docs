@@ -1,4 +1,4 @@
-与AWS资源进行交互的task集合。
+与AWS云进行交互的task集合。
 
 注意所有task都需要一个称为“AWS_CREDENTIALS”的Prefect密钥，该密钥应为带有两个键“ACCESS_KEY”和“SECRET_ACCESS_KEY”的JSON文档。
 
