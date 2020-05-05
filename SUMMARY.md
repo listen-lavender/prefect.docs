@@ -60,7 +60,7 @@
 * [进阶教程](advancetutorial/README.md)
     * [task映射并行和Prefect参数的高级特性](advancetutorial/advancedfeatures.md)
     * [Prefect算子](advancetutorial/calculator.md)
-    * [部署日志](advancetutorial/logging.md)
+    * [日志部署](advancetutorial/logging.md)
     * [Dask部署](advancetutorial/daskdeploy.md)
     * [ETL](advancetutorial/etl.md)
     * [本地调试](advancetutorial/localdebug.md)
