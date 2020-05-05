@@ -169,7 +169,7 @@ flow元数据可以通过调用**flow.serialize()**方法进行序列化。
 
 ## task检索
 
-flow可能包含很多task，要找到所需的确切task可能会很困难。幸运的是，**get_tasks**方法使这一过程变得更加简单。将任务的各种标识符的任何一个传递给该函数，它将检索出任何匹配的任务。
+flow可能包含很多task，要找到所需的确切task可能会很困难。幸运的是，**get_tasks**方法使这一过程变得更加简单。将task的各种标识符的任何一个传递给该函数，它将检索出任何匹配的task。
 
 ````Python
 # any tasks with the name "my task"

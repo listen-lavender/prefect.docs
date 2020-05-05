@@ -160,7 +160,7 @@ task还具有一些不常见但重要的状态变迁模式。
 > Running -> Paused -> Resume -> Running
 > 
 
-用户可以通过发出**PAUSE**信号来暂停任务。暂停后，必须将task置于恢复状态才能重回运行状态。暂停和恢复都是**Pending**的子类状态。
+用户可以通过发出**PAUSE**信号来暂停task。暂停后，必须将task置于恢复状态才能重回运行状态。暂停和恢复都是**Pending**的子类状态。
 
 ### Pause transition (before running)
 
@@ -168,7 +168,7 @@ task还具有一些不常见但重要的状态变迁模式。
 > Pending -> Paused
 > 
 
-如果task具有manual_only触发器，它将进入暂停状态。这将在运行之前发生，并且用户将必须手工启动这些任务才能继续。
+如果task具有manual_only触发器，它将进入暂停状态。这将在运行之前发生，并且用户将必须手工启动这些task才能继续。
 
 ### Mapped transition
 
@@ -176,7 +176,7 @@ task还具有一些不常见但重要的状态变迁模式。
 > Running -> Mapped
 > 
 
-如果task映射到其输入，则它将在运行后进入**Mapped**状态。这表明它没有做任何工作，而只是动态生成子任务来执行映射的函数。子状态可以通过Mapped.map_states访问。**Mapped**是一种完成状态，它是**Success**的子类状态。
+如果task映射到其输入，则它将在运行后进入**Mapped**状态。这表明它没有做任何工作，而只是动态生成子task来执行映射的函数。子状态可以通过Mapped.map_states访问。**Mapped**是一种完成状态，它是**Success**的子类状态。
 
 ***
 

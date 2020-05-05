@@ -1,4 +1,4 @@
-FunctionTask能将任何普通函数转换为任务，带有输入和输出。用户通常会通过Prefect的@task装饰器定义函数为task：
+FunctionTask能将任何普通函数转换为task，带有输入和输出。用户通常会通过Prefect的@task装饰器定义函数为task：
 
 ````Python
 @task

@@ -24,7 +24,7 @@ Prefect提供了几种处理缓存数据的方法。在任何可能的情况下�
 
 这种机制有时称为“时间旅行”，因为它使一个flow运行中计算出的结果可用于其他运行。
 
-缓存输出由三个任务参数控制：**cache_for**，**cache_validator**和**cache_key**。
+缓存输出由三个task参数控制：**cache_for**，**cache_validator**和**cache_key**。
 
  - cache_for：一个时间长度，表示应将输出缓存多长时间
  - cache_validator：一个可调用对象，表示缓存应如何过期。默认值为**duration_only**，这意味着缓存将在**cache_for**的持续时间内处于有效状态。其他验证器可以在**prefect.engine.cache_validators**中找到，并且包括用于在task接收到不同的输入或flow以不同的参数运行时失效缓存的机制
@@ -48,7 +48,7 @@ task_2 = prefect.Task(
 
 ## 检查点
 
-通常，将task的数据保存在外部存储很有用。你总是可以将此逻辑直接直接写入task本身，但这有时会使测试变得困难。Prefect提供了任务“检查点”的概念，以确保每次成功运行task时都会调用其结果处理器。要配置用于检查点的task，就得提供结果处理器，并在task初始化时设置**checkpoint=True**：
+通常，将task的数据保存在外部存储很有用。你总是可以将此逻辑直接直接写入task本身，但这有时会使测试变得困难。Prefect提供了task“检查点”的概念，以确保每次成功运行task时都会调用其结果处理器。要配置用于检查点的task，就得提供结果处理器，并在task初始化时设置**checkpoint=True**：
 
 ````Python
 from prefect.engine.result_handlers import LocalResultHandler

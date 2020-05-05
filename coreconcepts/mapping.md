@@ -139,7 +139,7 @@ The unmapped function can be applied to any number of input arguments. This mean
 
 该映射将遍历输入参数x，但不会遍历输入参数y。结果将是[11，12，13]。
 
-未映射的函数可以应用于任意数量的输入参数。这意味着映射的任务可以无缝地依赖于映射的和规约的上游task。
+未映射的函数可以应用于任意数量的输入参数。这意味着映射的task可以无缝地依赖于映射的和规约的上游task。
 
 ## 映射task的状态行为
 
