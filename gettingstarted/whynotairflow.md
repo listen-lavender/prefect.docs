@@ -326,7 +326,7 @@ f.run()
 >   -- 工具书《Mostly Harmless》
 > 
 
-因为Airflow和Prefect都是用Python编写的，因此可以按照标准的Python模式来对独立的task/operator逻辑进行单元测试。例如，在Airflow中，您可以导入DagBag提取单个DAG，并对其结构或包含的task进行各种断言测试。同样，在Prefect中，你可以轻松导入和测试workflow。此外，在Airflow和Prefect中，对于独立的task逻辑，都可以进行Python风格的单元测试。
+因为Airflow和Prefect都是用Python编写的，因此可以按照标准的Python模式来对独立的task/operator逻辑进行单元测试。例如，在Airflow中，可以导入DagBag提取单个DAG，并对其结构或包含的task进行各种断言测试。同样，在Prefect中，你可以轻松导入和测试workflow。此外，在Airflow和Prefect中，对于独立的task逻辑，都可以进行Python风格的单元测试。
 
 然而，在Airflow中测试DAG要比Prefect的workflow复杂的多。这是由于以下多种原因：
 

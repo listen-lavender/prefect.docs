@@ -12,7 +12,7 @@
 
 触发函数根据上游task的状态决定task是否准备就绪。除非触发器通过，否则高级task将无法运行。
 
-默认情况下，task具有**all_successful**触发器，这意味着除非所有上游task都成功，否则它们将不会运行。通过更改触发函数，您可以控制task相对于上游task的行为。其他触发器包括**all_failed**，**any_successful**，**any_failed**，**all_finished**和**manual_only**。这些可用于创建仅在前面的task失败时运行、或者一定运行、或者根本不会自动运行的task！
+默认情况下，task具有**all_successful**触发器，这意味着除非所有上游task都成功，否则它们将不会运行。通过更改触发函数，可以控制task相对于上游task的行为。其他触发器包括**all_failed**，**any_successful**，**any_failed**，**all_finished**和**manual_only**。这些可用于创建仅在前面的task失败时运行、或者一定运行、或者根本不会自动运行的task！
 
 仅当所有上游task都处于**Finished**状态时，task才会执行其触发器。因此，**all_finished**触发器与**always_run**触发器相同。
 
@@ -149,7 +149,7 @@ with prefect.context(key='abc'):
 
 ### Prefect提供的上下文
 
-除了您自己的上下文键之外，Prefect还可以在flow实例运行和task实例运行期间动态地将上下文提供给上下文对象。该上下文提供有关当前flow或task的一些标准信息。例如，正在运行的task已经从Prefect提供的上下文中知道了它们的运行日期：
+除了设置上下文键参数之外，Prefect还可以在flow实例运行和task实例运行期间动态地将上下文提供给上下文对象。该上下文提供有关当前flow或task的一些标准信息。例如，正在运行的task已经从Prefect提供的上下文中知道了它们的运行日期：
 
 ````Python
 @task

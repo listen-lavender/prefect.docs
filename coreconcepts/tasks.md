@@ -134,7 +134,7 @@ These operators automatically add new tasks to the active flow context.
 > 
 > **运算符验证**
 > 
-> 由于Prefect flow在创建时不会执行，因此Prefect无法验证是否将运算符应用于兼容类型。例如，您可以用产生整数的task表达式减去产生列表的task。这将在运行时发生错误，而不是在task定义期间。
+> 由于Prefect flow在创建时不会执行，因此Prefect无法验证是否将运算符应用于兼容类型。例如，可以用产生整数的task表达式减去产生列表的task。这将在运行时发生错误，而不是在task定义期间。
 > 
 
 ## 集合

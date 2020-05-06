@@ -29,7 +29,7 @@ def state_handler(obj: Union[Task, Flow], old_state: State, new_state: State) ->
     pass
 ````
 
-如您所见，状态处理器API是一种在每次状态更改时执行任意Python代码的简单方法。
+如你所见，状态处理器API是一种在每次状态更改时执行任意Python代码的简单方法。
 
 一个简单的例子将阐明其用法：
 
@@ -85,7 +85,7 @@ Running("Starting task run.") to Success("Task run succeeded.")
 
 ## 发送一个简单的通知
 
-如我们上面的例子所示，拦截task状态并对其进行响应非常容易。实际上，我们前面的示例可以认为是一个简单的通知系统，在该系统中，我们将通知打印到stdout。让我们更进一步，编写一个通知程序，每当我们的task完成运行时，该通知程序就会向Slack发布更新。为了使此示例正常工作，需要传入Webhook进行Slack应用设置。如果您不使用Slack或没有应用，则无需担心，只需将Slack URL与你可能会访问的任何其他web服务交换即可。
+如我们上面的例子所示，拦截task状态并对其进行响应非常容易。实际上，我们前面的示例可以认为是一个简单的通知系统，在该系统中，我们将通知打印到stdout。让我们更进一步，编写一个通知程序，每当我们的task完成运行时，该通知程序就会向Slack发布更新。为了使此示例正常工作，需要传入Webhook进行Slack应用设置。如果不使用Slack或没有应用，则无需担心，只需将Slack URL与你可能会访问的任何其他web服务交换即可。
 
 ````Python
 import requests

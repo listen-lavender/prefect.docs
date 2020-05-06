@@ -25,7 +25,7 @@ Prefect暴露一组“执行器”概念抽象，它们代表task应如何运行
 > 
 > **工作窃取**
 > 
-> 强烈建议您在执行Prefect流时关闭Dask集群中的Dask工作窃取。 这可以通过Dask集群中的环境变量来完成：
+> 强烈建议在执行Prefect流时关闭Dask集群中的Dask工作窃取。 这可以通过Dask集群中的环境变量来完成：
 > 
 > ````bash
 > DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING="False" # case sensitive
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 > python dask_flow.py
 ````
 
-现在，此flow将在本地Dask集群上每分钟运行一次，直到您终止进程。
+现在，此flow将在本地Dask集群上每分钟运行一次，直到终止进程。
 
 ## 进一步
 
