@@ -1,8 +1,8 @@
-常量task通常为用户自动创建，并在流图中表示恒定值。
+常量task通常为用户自动创建，并在flow中表示恒定值。
 
 ### Constant
 
-Constant类表示流程图中的单个值。
+Constant类表示flow中的单个值。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/constants.html#prefect-tasks-core-constants-constant)
 

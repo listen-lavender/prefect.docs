@@ -194,7 +194,7 @@ with Flow('Indexing Flow') as flow:
 
 一般来说，Prefect的函数式API允许像函数一样调用task。
 
-另外，可以调用**Task.map()**在其输入上自动映射task。Prefect将为输入的每个元素生成task的动态副本。如果你不希望输入被视为可迭代的（例如，你希望将其提供给每个动态副本），则只需使用Prefect的无映射装函数将其装饰即可。
+另外，可以调用**Task.map()**在其输入上自动映射task。Prefect将为输入的每个元素生成task的动态实例。如果你不希望输入被视为可迭代的（例如，你希望将其提供给每个动态实例），则只需使用Prefect的无映射装函数将其装饰即可。
 
 ````Python
 from prefect import task, unmapped

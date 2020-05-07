@@ -1,38 +1,38 @@
-Everything you wanted to know about Prefect Tasks and more.
+> 
+> 深入了解的有关Prefect task的所有信息以及更多信息。
+> 
 
-Contents
+## 基础
 
-The Basics
-Running Tasks
-Task Inputs and Outputs
-Adding Tasks to Flows
-Mapping
-Best Practices in Writing Tasks
-State Handlers
-#The Basics
-In simple terms, a Prefect Task represents an individual unit of work. For example, all of the following could qualify as a Prefect Task:
+简单来说，Prefect task代表一个单独的工作单元。例如，以下所有条件都可以作为Prefect task：
 
-querying a database
-formatting a string
-spinning up a Spark cluster
-sending a message on Slack
-running a Kubernetes Job
-creating a simple dictionary
-In addition to performing some action, Tasks can optionally receive inputs and / or return outputs. All of this "runtime" logic lives inside a single method on your Task class: the run method.
+ - 查询数据库
+ - 格式化字符串
+ - 玩转一个Spark集群
+ - 在Slack上发送消息
+ - 执行Kubernetes作业
+ - 创建一个简单的字典
 
-If you can write it in Python, you can do it in a Prefect Task
+除了执行某些操作外，task还可以选择性接收输入和返回输出。所有这些运行时逻辑都存在Task类的**.run()**方法内。
 
-When the run method of your task is called, it is executed as Python code. Consequently, if you can do it in Python, you can put it inside the run method of a Prefect Task.
+> 
+> **如果可以用Python编写，则可以转换成Prefect task**
+> 
+> 调用task的**.run()**方法时，它将作为Python代码执行。因此，如果可以在Python中编写此操作代码，则可以将其放入Prefect task的**.run()**方法中。
+> 
+> 但是，仍然有一些注意事项：
+> 
+>  - 如果使用超时，则有时会依赖于多进程/多线程，这可能会干扰判断你的task会需要多大资源
+>  - 确保了解[task输入和输出](https://docs.prefect.io/core/advanced_tutorials/task-guide.html#task-inputs-and-outputs)的可能限制
+> 
 
-There are still a few considerations though:
+一般而言，有两种首选的方法来创建自己的Prefect task：在函数上使用@task装饰器，或对Prefect Task类进行子类化。通过编写一个将两个数字加在一起的自定义task来分别查看每种task示例。
 
-if you utilize timeouts, this sometimes relies on multiprocessing / multithreading which can interfere with how resource intensive your Task can be
-make sure that you understand the possible retrictions on Task inputs and outputs
-Generally speaking, there are two preferred methods for creating your own Prefect Tasks: using the @task decorator on a function, or subclassing the Prefect Task class. Let's take a look at an example of each of these individually by writing a custom task which adds two numbers together.
+### 子类化Task基类
 
-#Subclassing the Task class
-Subclassing the Task class is the preferred method for creating Tasks when you want a reusable, parametrizable Task interface (for example, when adding a Task to the Prefect Task Library). All of your runtime logic is implemented inside of the Task's run method:
+当需要可重用的、可参数化的task模型（例如，将自定义task添加到[Prefect Task库](https://docs.prefect.io/core/task_library/)中）时，子类化Task基类是创建task的首选方法。所有运行时逻辑都在task的**.run()**方法内部实现：
 
+````Python
 from prefect import Task
 
 
@@ -42,14 +42,15 @@ class AddTask(Task):
 
 add_task = AddTask(name="Add")
 add_task # <Task: Add>
- 
-        Copied!
-    
-Here we have created a Prefect Task named "Add" which receives two inputs (called x and y), and returns a single output. Note that we had to instantiate our custom Task class in order to reach a proper Prefect Task object.
+````
 
-#The @task decorator
-We can avoid the object-oriented boilerplate altogether by writing a custom Python function and using the @task decorator:
+在这里，我们创建了一个名为“Add”的Prefect task，它接收两个输入（称为x和y），并返回一个输出。注意必须实例化自定义Task类，以创建正确的Prefect task对象。
 
+### @task装饰器
+
+通过编写自定义Python函数并使用@task装饰器，我们可以完全避免面向对象的风格：
+
+````Python
 from prefect import task
 
 @task(name="Add")
@@ -57,82 +58,90 @@ def add_task(x, y):
     return x + y
 
 add_task # <Task: Add>
- 
-        Copied!
-    
-Here we have created an equivalent Task to the one above - the @task decorator essentially assigns this function as the run method of the underlying Task class for us. A few observations are in order:
+````
 
-the @task decorator instantiates a Prefect Task automatically
-all Task initialization keywords can be provided to the decorator
-if you choose not to provide a name, the function name will be used as the Task name
-Call signatures cannot be arbitrary
+在这里，我们创建与上述task等效的结果，@task装饰器本质上为我们装配此函数作为基础Task类的**.run()**方法的执行逻辑。以下是一些观察结果：
 
-When implementing a Prefect Task, whether via subclassing or the decorator, there are some minor restrictions on your Task's call signature:
+ - @task装饰器会自动实例化一个Prefect task
+ - 所有[task初始化关键字参数](https://docs.prefect.io/api/latest/core/task.html#task-2)都可以在装饰器设置
+ - 如果选择不提供名称，则函数名称将用作task名称
 
-First, all arguments to Prefect Tasks are ultimately treated as keyword arguments. This means that arbitrary positional arguments (usually written *args) are not allowed.
+> 
+> **调用签名不能是任意的**
+> 
+> 在实现Prefect task时，无论是通过子类化还是装饰器，对task的调用签名都有一些较小的限制：
+> 
+> 首先，Prefect task的所有参数最终都被视为关键字参数。这意味着不允许使用顺序参数（通常写为*args）。
+> 
+> 除了禁止（*args）外，以下关键字是保留关键字，并且不能由自定义Prefect task使用：
+> 
+>  - **upstream_tasks**：用于指定不交换数据的上游依赖关系
+>  - **mapped**：映射的内置实现
+>  - **task_args**：在函数式API中创建实例时覆盖task属性的一种方式
+>  - **flow**：工作流的内置实现
+> 
+> 最后，Prefect必须能够检查函数签名才能应用这些规则。某些函数的签名无法检查，包括内置函数和许多numpy函数。要使用它们，将它们包装在普通的Python task中：
+> 
+> ````Python
+> @task
+> def prefect_bool(x):
+>     """
+>     `prefect.task(bool)` doesn't work because `bool` is
+>     a `builtin`, but this wrapper function gets around the restriction.
+>     """
+>     return bool(x)
+> ````
+> 
+> 如果违反任何这些限制，则在创建task时会立即引发错误，并产生通知。
+> 
 
-In addition to disallowing *args, the following keywords are reserved and cannot be used by custom Prefect Tasks:
+### 有用的Prefect上下文
 
-upstream_tasks: reserved for specifying upstream dependencies which do not exchange data
-mapped: reserved for internal implementation details of mapping
-task_args: reserved as a way of overriding task attributes when creating copies in the functional API
-flow: reserved for internal implementation details
-Lastly, Prefect must be able to inspect the function signature in order to apply these rules. Some functions, including builtins and many numpy functions, can not be inspected. To use them, wrap them in a normal Python task:
+有时，在task的运行时逻辑中包含额外自省信息会很有用。这些信息是通过Prefect的**Context**对象提供的。**prefect.context**是一个类似于字典的对象（对键具有属性访问权限），其中包含有用的运行时信息。例如，tasklogger存储在Prefect Context中，用于向task添加自定义日志。
 
-@task
-def prefect_bool(x):
-    """
-    `prefect.task(bool)` doesn't work because `bool` is
-    a `builtin`, but this wrapper function gets around the restriction.
-    """
-    return bool(x)
- 
-        Copied!
-    
-If you violate any of these restrictions, an error will be thrown immediately at Task creation informing you.
-
-#Prefect Context contains useful information
-Sometimes it is useful to have additional information within your Task's runtime logic. Such information is provided via Prefect's Context object. prefect.context is a dictionary-like object (with attribute access for keys) containing useful runtime information. For example, your Task's logger is stored in Prefect Context for adding custom logs to your task.
-
+````Python
 import prefect
 
 @prefect.task
 def log_hello():
     logger = prefect.context["logger"]
     logger.info("Hello!")
- 
-        Copied!
-    
-Note that context is only populated within a Flow run. This is important to be aware of when testing your task outside of a Flow run. For a complete list of information available in Prefect Context, see the API documentation. For more information on how context works, see the associated Concept Doc. Note that context has a graceful .get method for accessing keys which are not guaranteed to exist.
+````
 
-#Running Tasks
-Most users want to run their tasks outside of a Flow to test that their logic is sound. There are a few different ways of running your Task locally, with varying complexity:
+请注意，上下文仅在flow运行时填充。在flow运行之外测试task时要意识到这一点很重要。有关Prefect Context中可用数据的完整列表，请参阅[API文档](https://docs.prefect.io/api/latest/utilities/context.html)。有关上下文如何工作的更多信息，请参阅相关的[概念文档](https://docs.prefect.io/core/concepts/execution.html#context)。注意上下文有一个优雅的**.get**方法来访问不保证存在的键。
 
-#Calling your Task's run method
-This is the most straightforward way to test your Task's runtime logic. Using our add_task from above (the method of creation is irrelevant at this stage), we have:
+## 执行task
 
+大多数用户希望在flow之外运行其task以测试其逻辑是否合理。有几种不同的本地调试task的方式，其复杂性各不相同：
+
+### 调用task的**.run()**方法
+
+这是测试task的运行时逻辑的最直接方法。使用上面的**add_task**（在此阶段初始化创建方法无关紧要），我们可以：
+
+````Python
 add_task.run(1, 2) # returns 3
 add_task.run(x=5, y=-10) # returns -5
 add_task.run(x=[1, 2], y=[3, 4]) # returns [1, 2, 3, 4]
- 
-        Copied!
-    
-In this way, testing and running your Task is as simple as testing any class method, with very minimal Prefect overhead to get in your way.
+````
 
-#Using a TaskRunner
-If you're interested in testing your Task as Prefect sees it, using a TaskRunner can be beneficial. Prefect TaskRunners are designed to handle all of the surface area around your runtime logic, such as:
+这样，测试和运行task就像测试任何类方法一样简单，并且可以以最少的Prefect开销达到目标。
 
-are the upstream tasks finished?
-are the upstream tasks in an appropriate state, as specified by your Task's trigger?
-is your Task mapped, and should it spawn multiple copies of itself?
-is your Task running on Cloud, and should it set its state in the Cloud database?
-does your Task have result handlers or state handlers that need to be called?
-what State should your Task run be in after it has run?
-To see this in action, let's run a Task which requires no inputs.
+### 使用TaskRunner
 
+如果有兴趣遵从Prefect的可见性测试task，那么使用TaskRunner可能会有所帮助。Prefect TaskRunner设计用于处理运行时逻辑周围的所有表面区域，例如：
+
+ - 上游task完成了吗？
+ - 上游task是否处于由task触发器指定的适当状态？
+ - 是task映射，并且应该产生自己的多个实例吗？
+ - Task是否在Cloud上运行，是否应在Cloud数据库中设置其状态？
+ - task是否有需要调用的结果处理器或状态处理器？
+ - task运行结束后应处于什么状态？
+
+为了了解这一点，让我们运行一个无需输入的task。
+
+````Python
 from prefect import task
 from prefect.engine import TaskRunner
-
 
 @task
 def number_task():
@@ -143,13 +152,13 @@ state = runner.run()
 
 assert state.is_successful()
 assert state.result == 42
- 
-        Copied!
-    
-In this case, the TaskRunner doesn't actually return the value of the Task's run method, but instead returns a Prefect Success state which has the return value stored in its result attribute.
+````
 
-We can now begin to do more interesting things, such as provide upstream states to test our trigger logic:
+在这种情况下，TaskRunner实际上不返回task的**.run()**方法的值，而是返回Prefect Success状态，该状态的返回值存储在**result**属性中。
 
+现在，我们可以开始做更多有趣的事情，例如提供上游状态来测试触发逻辑：
+
+````Python
 from prefect import Task
 from prefect.core import Edge
 from prefect.engine.state import Failed
@@ -164,41 +173,46 @@ state = runner.run(upstream_states={upstream_edge: upstream_state})
 # and its corresponding result is the exception that was caught
 assert state.is_failed()
 assert isinstance(state.result, Exception)
- 
-        Copied!
-    
-This brings you into Prefect implementation details very quickly, but the important takeaway here is that using a TaskRunner allows us to test all of the Prefect settings on our Task as a standalone unit (without the backdrop of a Flow).
+````
 
-If you are interested in pursuing this further, the following API reference documents may be useful:
+这可以使你快速了解Prefect的实施细节，但是这里重要的一点是，使用TaskRunner让我们可以单独测试task上的所有Prefect设置（没有flow的上下文支持）。
 
-Edges
-TaskRunner
-States
-Triggers
-Flows have runners, too
+如果有兴趣进一步进行此操作，则以下API参考文档可能会有用：
+ - [Edge](https://docs.prefect.io/api/latest/core/edge.html)
+ - [TaskRunner](https://docs.prefect.io/api/latest/engine/task_runner.html#taskrunner-2)
+ - [State](https://docs.prefect.io/api/latest/engine/state.html#state-2)
+ - [Trigger](https://docs.prefect.io/core/concepts/execution.html#triggers)
 
-In addition to TaskRunners, Prefect also has a concept of a FlowRunner, which is the object responsible for making a single pass through your Flow and its task states. The keyword arguments on the run method of both Task and Flow runners are useful to explore when testing your Flows.
+> 
+> **flow也有执行者
+> 
+> 除了TaskRunner之外，Prefect还具有FlowRunner的概念，FlowRunner是响应flow及其task状态进行单次OK的对象。Task和Flow执行者的**.run()**方法上的关键字参数对于测试flow很有用。
+> 
 
-#Task Inputs and Outputs
-In many workflow systems, individual "Tasks" are only allowed to report a minimal set of information about their state (for example, "Finished", "Failed" or "Sucessful"). In Prefect, we encourage Tasks to actually exchange richer information, including "arbitrary" data objects.
+## task输入和输出
 
-However, there can be restrictions on what tasks can receive as inputs and return as outputs. In particular, Prefect's most popular executor is the DaskExecutor, which allows users to execute tasks on a cluster; because each machine is running a different Python process, Dask must convert Python objects to bytecode that can be shared between different processes. Consequently, the data that is passed around the Prefect platform must be compatible with this serialization protocol. Specifically, tasks must operate on objects that are serializable by the cloudpickle library.
+在许多工作流系统中，仅允许单个task报告有关其状态的最少信息集（例如，“完成”、“失败”或“成功”）。 在Prefect中，我们鼓励Task实际交换更丰富的信息，包括“任意”数据对象。
 
-What can cloudpickle serialize?
+但是，可以限制哪些task可以作为输入接收和作为输出返回。特别是，Prefect flow的执行器是DaskExecutor，它允许用户在集群上执行task。由于每台机器运行的都是不同的Python进程，因此Dask必须将Python对象转换为可以在不同进程之间共享的字节码。因此，在Prefect平台周围传递的数据必须与此序列化协议兼容。具体来说，task必须对可通过[cloudpickle库](https://github.com/cloudpipe/cloudpickle)进行对象的序列化操作。
 
-most data structures, including lists, sets, and dictionaries
-functions (including lambda functions)
-most classes, as long as their attributes are serializable
-What can’t cloudpickle serialize?
+### cloudpickle可以序列化什么？
 
-generators
-file objects
-thread locks
-deeply recursive classes
-How can I determine if something is serializable?
+ - 大多数数据结构，包括列表，集合和词典
+ - 函数（包括lambda函数）
+ - 大多数类，只要它们的属性是可序列化的
 
-Import cloudpickle and attempt to make the round trip:
+### cloudpickle不能序列化什么？
 
+ - 迭代器
+ - 文件对象
+ - 线程锁
+ - 深度递归类
+
+### 如何确定某些东西是否可序列化？
+
+导入cloudpickle，并尝试序列化/反序列化：
+
+````Python
 import cloudpickle
 
 cloudpickle.dumps(None)
@@ -210,69 +224,73 @@ assert obj is None
 custom_generator = (x for x in range(5))
 cloudpickle.dumps(custom_generator)
 # TypeError: can't pickle generator objects
- 
-        Copied!
-    
-This subtle and technical constraint actually informs a lot of design decisions in the Task library (as we will see shortly). Moreover, users will undoubtedly run into this situation on occasion, and it’s important to recognize the types of errors that arise when this constraint is violated. Also, as you write your own flows, keep this in mind when you design your Tasks and how they communicate information.
+````
 
-#Adding Tasks to Flows
-Now that you've written your Tasks, it's time to add them to a Flow. Sticking with the number_task created above, let's add this Task to our Flow using Prefect's Imperative API:
+实际中，这些细微和技术上的限制在task库中为很多设计决策提供信息（我们将很快看到）。此外，毫无疑问，用户有时会遇到这种情况，重要的是要认识到违反此约束时出现的错误类型。另外，在编写自己的流程时，在设计task以及它们如何传达信息时，请记住这一点。
 
+### 添加task到flow
+
+现在已经编写了task，是时候将它们添加到flow中。坚持使用上面创建的**number_task**，让我们使用Prefect的命令式API将此task添加到flow中：
+
+````Python
 from prefect import Flow
 
 f = Flow("example")
 f.add_task(number_task)
 
 print(f.tasks) # {<Task: number_task>}
- 
-        Copied!
-    
-So far, so good - our Flow now consists of a single task. How might we add a single task to a Flow using the Functional API? In this instance, we have to perform some action on the Task to "register" it with the Flow. In general, Tasks will be auto-added to a Flow in the functional API if one of the following is true:
+````
 
-the task is called within a Flow context or
-the task is called as a dependency of another task
-In this case, because we have a single Task and no dependencies, we must resort to calling the instantiatied Task:
+到目前为止，一切都很好，我们的flow现在仅包含一个task。我们如何使用函数式API将单个task添加到flow？在这种情况下，我们必须对task执行一些操作以将其注册到flow。通常，如果满足以下条件之一，则task将通过函数式API自动添加到flow：
 
+ - 在flow上下文中调用task
+ - 该task作为另一个task的依赖被调用
+
+在这种情况下，因为只有一个task而没有依赖关系，所以我们必须借用实例化Task：
+
+````Python
 with Flow("example-v2") as f:
     result = number_task()
 
 print(f.tasks) # {<Task: number_task>}
- 
-        Copied!
-    
-Calling Tasks creates copies
+````
 
-Using the example above, you might be surprised to find:
+> 
+> **调用task创建实例**
+> 
+> 使用上面示例，你可能会惊讶地发现：
+> 
+> ````Python
+> number_task in f.tasks # False
+> result in f.tasks # True
+> ````
+> 
+> 这是因为调用Prefect task实际上会创建该task的实例并返回该实例。这允许使用优雅的Python函数，例如使用不同的输入多次调用task以产生不同的输出。
+> 
+> 每当创建实例时，都可以选择通过特殊的**task_args**关键字覆盖任何/所有task属性：
+> 
+> ````Python
+> with Flow("example-v3") as f:
+>     result = number_task(task_args={"name": "new-name"})
+> 
+> print(f.tasks) # {<Task: new-name>}
+> ````
+> 
+> 这对于覆盖task触发器，标签，名称等很有用。
+> 
 
-number_task in f.tasks # False
-result in f.tasks # True
- 
-        Copied!
-    
-This is because calling a Prefect Task actually creates a copy of that Task and returns that copy. This allows for natural feeling Python patterns such as calling a Task multiple times with different inputs to create different outputs.
+为了了解其中的一些细微差别，让我们使用上面创建的**add_task** task来制作一个更复杂的示例。首先，使用命令式API的**set_dependencies**方法：
 
-Whenever a copy is created, you can optionally override any / all task attributes via the special task_args keyword:
-
-with Flow("example-v3") as f:
-    result = number_task(task_args={"name": "new-name"})
-
-print(f.tasks) # {<Task: new-name>}
- 
-        Copied!
-    
-This can be useful for overriding Task triggers, tags, names, etc.
-
-To see some of these subtleties in action, let's work out a more complicated example using our add_task Task created above. First, let's use the set_dependencies method of the imperative API:
-
+````Python
 f = Flow("add-example")
 
 f.set_dependencies(add_task, keyword_tasks={"x": 1, "y": 2})
 print(f.tasks) # {<Task: add_task>}
- 
-        Copied!
-    
-Now, let's switch our attention to the functional API and reproduce the above example exactly:
+````
 
+现在，让我们将注意力转移到函数式API上，并完全重现上述示例：
+
+````Python
 with Flow("add-example-v2") as f:
     result = add_task(x=1, y=2)
 
@@ -280,51 +298,52 @@ print(f.tasks) # {<Task: add_task>}
 
 add_task in f.tasks # False
 result in f.tasks # True
- 
-        Copied!
-    
-We see here that a copy of the add_task was created and added to the Flow.
+````
 
-Auto-generation of Tasks
+我们在这里看到**add_task**的实例已创建并添加到flow中。
 
-Note that Prefect will autogenerate Tasks to represent Python collections; so, for example, adding a dictionary to a Flow will actually create Tasks for the dictionary's keys and its values.
+> 
+> **Auto-generation of Tasks**
+> 
+> 注意Prefect将自动生成tasks来表示Python集合；因此，例如，将字典添加到flow实际上会为字典的键及其值创建task。
+> 
+> ````Python
+> from prefect import task, Flow
+> 
+> @task
+> def do_nothing(arg):
+>     pass
+> 
+> with Flow("constants") as flow:
+>     do_nothing({"x": 1, "y": [9, 10]})
+> 
+> flow.tasks
+> 
+> #  <Task: Dict>,
+> #  <Task: List>, # corresponding to [9, 10]
+> #  <Task: List>, # corresponding to the dictionary keys
+> #  <Task: List>, # corresponding to the dictionary values
+> #  <Task: do_nothing>}
+> 
+> 对于深度嵌套的Python集合而言，这可能会很麻烦。为了防止发生这种细粒度的自动生成，您始终可以将Python对象包装在常量task中：
+> 
+> ````Python
+> from prefect.tasks.core.constants import Constant
+> 
+> with Flow("constants") as flow:
+>     do_nothing(Constant({"x": 1, "y": [9, 10]}))
+> 
+> flow.tasks
+> 
+> # {<Task: Constant[dict]>, <Task: do_nothing>}
+> ````
+> 
+> 常量task告诉Prefect将其输入视为原始常量，而无需进一步的自省。
+> 
 
-from prefect import task, Flow
+最后说明如何/何时在函数式API中将task添加到flow中，让我们将这些值提升为具有默认值的Prefect参数：
 
-@task
-def do_nothing(arg):
-    pass
-
-with Flow("constants") as flow:
-    do_nothing({"x": 1, "y": [9, 10]})
-
-flow.tasks
-
-#  <Task: Dict>,
-#  <Task: List>, # corresponding to [9, 10]
-#  <Task: List>, # corresponding to the dictionary keys
-#  <Task: List>, # corresponding to the dictionary values
-#  <Task: do_nothing>}
- 
-        Copied!
-    
-This can be burdensome for deeply nested Python collections. To prevent this granular auto-generation from occuring, you can always wrap Python objects in a Constant Task:
-
-from prefect.tasks.core.constants import Constant
-
-with Flow("constants") as flow:
-    do_nothing(Constant({"x": 1, "y": [9, 10]}))
-
-flow.tasks
-
-# {<Task: Constant[dict]>, <Task: do_nothing>}
- 
-        Copied!
-    
-The Constant Task tells Prefect to treat its input as a raw constant, with no further introspection.
-
-As a final illustration of how / when Tasks are added to Flows in the functional API, let's elevate these values to Parameters with default values:
-
+````Python
 from prefect import Parameter
 
 with Flow("add-example-v3") as f:
@@ -342,42 +361,45 @@ result in f.tasks # True
 
 x in f.tasks # True
 y in f.tasks # True
- 
-        Copied!
-    
-Our final observation is that the Parameters were added to the Flow as-is (no copies were made). Copies will only be created when you call a Task.
+````
 
-You can specify non-data dependencies with the functional API
+我们的最终观察结果是将参数按原样添加到flow中（未制作实例）。仅当调用task时才创建实例。
 
-A common misconception is that the functional API does not allow users to specify non-data dependent tasks (Task B should run after Task A, but no data is exchanged). In fact, this is possible using the special upstream_tasks keyword argument to the task's call method. Here is an example:
+> 
+> **可以使用函数式API指定非数据依赖task。**
+> 
+> 一个常见的误解是函数式API不允许用户指定无数据依赖的task（taskB应该在taskA之后运行，但不交换任何数据）。实际上，使用task的调用方法的特殊**upstream_tasks**关键字参数可以实现此目的。这是一个例子：
+> 
+> ````Python
+> from prefect import task, Flow
+> 
+> @task(name="A")
+> def task_A():
+>     # does something interesting and stateful
+>     return None
+> 
+> 
+> @task(name="B")
+> def task_B():
+>     # also does something interesting and stateful
+>     return None
+> 
+> with Flow("functional-example") as flow:
+>     result = task_B(upstream_tasks=[task_A])
+> ````
+> 
 
-from prefect import task, Flow
+## 映射
 
-@task(name="A")
-def task_A():
-    # does something interesting and stateful
-    return None
+映射是Prefect的特性，它允许用户动态生成给定task的多个实例，以响应上游task的输出。映射task后，Prefect会自动为其输入数据的每个元素创建task的实例。一个task实例应用于一个元素。这意味着映射的task实际上代表许多单个下游task的计算。
 
+如果正常（未映射）task依赖于映射task，则Prefect会自动应用规约合并操作以收集映射结果并将其传递给下游task实例。
 
-@task(name="B")
-def task_B():
-    # also does something interesting and stateful
-    return None
+但是，如果一个映射task依赖于另一个映射task，则Prefect不会规约合并上游结果。而是将第n个上游task实例节点连接到第n个下游task实例节点，从而创建独立的并行管道。
 
-with Flow("functional-example") as flow:
-    result = task_B(upstream_tasks=[task_A])
- 
-        Copied!
-    
-#Mapping
-Mapping is a unique feature of Prefect, which allows users to dynamically spawn multiple copies of a given Task in response to an upstream Task's output. When a task is mapped, Prefect automatically creates a copy of the task for each element of its input data. The copy -- referred to as a "child" task -- is applied only to that element. This means that mapped tasks actually represent the computations of many individual children tasks.
+看一个简单的例子：
 
-If a "normal" (non-mapped) task depends on a mapped task, Prefect automatically applies a reduce operation to gather the mapped results and pass them to the downstream task.
-
-However, if a mapped task relies on another mapped task, Prefect does not reduce the upstream result. Instead, it connects the nth upstream child to the nth downstream child, creating independent parallel pipelines.
-
-Let's have a look at a simple example:
-
+````Python
 import prefect
 from prefect import task, Flow
 
@@ -404,20 +426,21 @@ flow.set_dependencies(sum_numbers, keyword_tasks={"y": add_one})
 with Flow("Map Reduce") as flow:
     mapped_result = add_one.map(x=[1, 2, 3, 4])
     summed_result = sum_numbers(mapped_result)
- 
-        Copied!
-    
-Whenever this Flow is run, we will see the following log:
+````
 
+每当运行此flow时，都会看到以下日志：
+
+````bash
 [2019-07-20 21:35:00,968] - INFO - prefect.Task | The sum is 14
- 
-        Copied!
-    
-Note that each "child" task is a first class Prefect Task. This means that they can do anything a "normal" task can do, including succeed, fail, retry, pause, or skip.
+````
 
-#Not Everything must be mapped over
-Suppose we have a Task that accepts many keyword arguments and we want to only map over a subset of those arguments. In this case, we can use Prefect's unmapped container for specifying those inputs which should not be mapped over:
+注意每个task实例都是一等公民的Prefect task。这意味着它们能执行正常task可以执行的任何操作，包括成功、失败、重试、暂停或跳过。
 
+### 并非所有内容都必须映射
+
+假设我们有一个task，接受许多关键字参数，并且我们只想映射这些参数的子集（部分参数）。在这种情况下，可以使用Prefect的未映射容器来指定不应映射到的那些输入：
+
+````Python
 from prefect import task, Flow
 from prefect.utilities.tasks import unmapped
 
@@ -428,14 +451,15 @@ def add_one(x, y):
 
 with Flow("unmapped example") as flow:
     result = add_one.map(x=[1, 2, 3], y=unmapped(5))
- 
-        Copied!
-    
-When this Flow runs, only the x keyword will be mapped over; the y will remain fixed with the constant value of 5.
+````
 
-#Mapped Tasks don't have to exchange data
-Prefect's API is designed for maximum flexibility - it is actually possible to spawn multiple mapped copies of a Task in response to an upstream output without exchanging data. For example:
+运行此flow时，仅x关键字将被映射；y将保持固定不变，值为5。
 
+### 映射task不交换数据
+
+实际上，Prefect的API为了提供最大的灵活性，可以响应上游输出而生成task的多个映射实例，而无需数据依赖。例如：
+
+````Python
 from prefect import task, Flow
 
 @task
@@ -450,23 +474,27 @@ def print_hello():
 
 with Flow("print-example") as flow:
     result = print_hello.map(upstream_tasks=[return_list])
- 
-        Copied!
-    
-When this flow runs, we will see four print statements, one corresponding to each value of the return_list output. This pattern (combined with the unmapped container) is sometimes useful when you have multiple mapping layers and complicated dependency structures. Additionally, it is worth noting that if return_list returned an empty list, no child tasks would be created and the print_hello task would succeed gracefully.
+````
 
-Order Matters
+当此flow运行时，我们将看到四个print语句，每一个print语句对应**return_list**输出的每个值。当你具有多个映射层和复杂的依赖关系结构时，此模式（与未映射的容器结合使用）有时很有用。另外，值得注意的是，如果**return_list**返回一个空列表，则不会创建任何task实例，并且**print_hello** task会正常运行。
 
-Note that order matters in Prefect mapping. Internally, Prefect tracks your mapped child tasks via a "map index" which describes its position in the mapping. For this reason we don't recommend mapping over dictionaries, sets, or anything else without a natural of ordering.
+> 
+> **顺序影响**
+> 
+> 注意顺序在Prefect映射中很重要。在内部，Prefect通过映射索引追踪映射的上下游task，映射索引描述了其在映射中的位置。 因此，我们不建议在没有顺序的情况下映射字典、集合或其他任何东西。
+> 
 
-#Best Practices in Writing Tasks
-We can distill most of the above information into a few pieces of advice for designing your own Prefect Tasks.
+## 编写task最佳实践
 
-#Be careful with Task attributes
-In exactly the same way that Task Inputs and Outputs eventually need to be serialized, so will Task attributes. In fact, if you deploy your Flow to Prefect Cloud, your Task attributes will need to pass through cloudpickle regardless of whether you submit your Flow to a Dask Cluster.
+我们可以将上述大多数规则提炼成一些设计Prefecttask的建议。
 
-For example, the following Task design would be bad and could not be deployed to Cloud nor could it run using a Dask-based executor:
+### 注意task属性
 
+与[task输入和输出](https://docs.prefect.io/core/advanced_tutorials/task-guide.html#task-inputs-and-outputs)最终需要序列化的方式完全相同，task属性也需要序列化。实际上，如果将flow部署到Prefect Cloud，则无论是否将flow提交到Dask集群，task属性都将需要通过cloudpickle传递。
+
+例如，以下task设计可能很糟糕，无法部署到Cloud，也不能使用基于Dask的执行器运行：
+
+````Python
 import google.bigquery
 
 class BigQuery(Task):
@@ -476,14 +504,15 @@ class BigQuery(Task):
 
     def run(self, query: str):
         self.client.query(query)
- 
-        Copied!
-    
-In this case, instantiating the Client outside of the run method will prevent this Task from being serializable by cloudpickle (instead you should instantiate the client within the run method).
+````
 
-#Avoid Statefulness
-In addition to avoiding attributes which cannot be serialized, you should also avoid on relying on statefulness in your Tasks. For example, in designing a Task class, relying on an attribute which stores state would not behave as expected:
+在这种情况下，在**.run()**方法之外实例化Client将阻止该task被cloudpickle序列化（相反，应在**.run()**方法中实例化Client）。
 
+### 无状态
+
+除了避免无法序列化的属性外，还应该避免依赖有状态的task。例如，在设计Task类时，依赖于存储状态的属性将不会表现出预期的行为：
+
+````Python
 class Bad(Task):
     def __init__(self, *args, **kwargs):
         self.run_count = 0
@@ -492,11 +521,11 @@ class Bad(Task):
     def run(self):
         self.run_count += 1
         return self.run_count
- 
-        Copied!
-    
-Similarly, relying on some global state will ultimately result in headache:
+````
 
+同样，依赖某些全局状态最终会导致麻烦：
+
+````Python
 global_state = {"info": []}
 
 @task
@@ -506,12 +535,13 @@ def task_one():
 @task
 def task_two():
     global_state["info"].append(2)
- 
-        Copied!
+````
     
-#Use a Task class for "templating" Tasks
-Using the subclass approach to designing Tasks can be beneficial whenever you want to provide a configurable task "template", whose default values can be both set at initialization time and optionally overwritten at runtime. For example, let's alter the add_task we created above to provide a default value for y:
+### 通过Task类设计业务task的模板
 
+每当要提供可配置的task模板时，使用[子类化方式](https://docs.prefect.io/core/advanced_tutorials/subclassing-the-task-class)来设计task都是有益的，该task的默认值既可以在初始化时设置，也可以在运行时覆盖。 例如，让我们更改上面创建的add_task，为y提供默认值：
+
+````Python
 class AddTask(Task):
     def __init__(self, *args, y=None, **kwargs):
         self.y = y
@@ -529,23 +559,27 @@ add_task = AddTask(y=0)
 with Flow("add-with-default") as f:
     result_one = add_task(x=1)
     result_two = add_task(x=0, y=10)
- 
-        Copied!
-    
-We've found this pattern of setting defaults which are optionally overwritten at runtime to be so common, we created a utility function to minimize boilerplate. In addition, subclassing allows you to write custom class methods that are organized in one place.
+````
 
-Always call the parent Task initialization method
+我们发现这种设置默认值的模式非常普遍，可以选择在运行时将其覆盖，因此我们创建一个[实用程序函数](https://docs.prefect.io/api/latest/utilities/tasks.html#prefect-utilities-tasks-defaults-from-attrs)以最小化样板。此外，子类化允许在一个地方组织自定义类方法。
 
-Anytime you subclass Task, make sure to call the parent initialization method! This ensures Prefect will recognize your custom Task as an actual Task. In addition, we highly recommend always allowing for arbitrary keyword arguments (i.e., **kwargs) which are passed to the Task __init__ method. This ensures that you can still set things such as Task tags, custom names, result handlers, etc.
+> 
+> **一定调用父task的初始化方法**
+> 
+> 任何时候将Task子类化，请确保调用父task初始化方法！这样可以确保自定义task能被Prefect识别。此外，我们强烈建议始终允许将字典关键字参数（即**kwargs）传递给task的**.__init__()**方法。这样确保仍然可以设置诸如task标签，自定义名称，结果处理器等内容。
+> 
 
-#State Handlers
-State handlers are a useful way of creating custom "hooks" for your Tasks, and responding to each and every state change the Task undergoes. Common use cases of state handlers include:
+### 状态处理器
 
-sending notifications on failure / success
-intercepting results and manipulating them
-calling out to an external system to make sure your Task is ready to run (if you have an implicit non-Prefect dependency)
-A state handler is a function with a particular call signature that is attached to your Task. For example:
+状态处理器是一种有用的方式，可以为task创建自定义hook，并响应task所经历的每个状态。状态处理器的常见用例包括：
 
+ - 发送有关失败/成功的通知
+ - 拦截结果并对其进行操作
+ - 调出外部系统以确保task准备就绪，可以运行（如果具有隐式的非Prefect依赖项）
+
+状态处理器是具有附加到task的特定调用签名的函数。例如：
+
+````Python
 from prefect import task
 import requests
 
@@ -560,12 +594,19 @@ def send_notification(obj, old_state, new_state):
 @task(state_handlers=[send_notification])
 def do_nothing():
     pass
- 
-        Copied!
-    
-Whenever this Task runs, it will undergo many state changes. For example, from Pending to Running. If at any step in the pipeline it transitions to a state which is considered "Failed", a POST request will be sent containing the error message from the failed state. (Note that the on_failure keyword argument to Tasks is a convenient interface to a state handler which is only called on failed states). Additionally, you can attach as many state handlers to a task as you wish and they will be called in the order that you provide them in.
+````
 
-State Handler failure results in Task failure
+每当此task运行时，它将经历许多状态更改。例如，从**Pending**到**Running**。如果在管道中的任何步骤转换为**Failed**状态，则将发送POST请求，其中包含来自失败状态的错误信息。（注意task的**on_failure**关键字参数是状态处理器的便捷接口，该状态处理器仅在失败的状态上被调用）。此外，可以根据需要将任意数量的状态处理器附加到task，并且将按照提供的顺序来调用它们。
 
-Because state handlers are considered a part of your custom Task logic in Prefect, if your state handler raises an error for any reason your Task will be placed in a Failed state. For this reason we highly recommend being thoughtful with how you implement your state handlers / callbacks.
+> 
+> **状态处理器失败导致task表现为失败**
+> 
+> 由于状态处理器被视为Prefect中自定义task逻辑的一部分，因此，如果状态处理器由于任何原因引发错误，则task将会处于**Failed**状态。因此，我们强烈建议仔细考虑如何实现状态处理器/回调。
+> 
+
+***
+
+- [Prefect官网](https://www.prefect.io/)
+- [英版原文](https://docs.prefect.io/core/advanced_tutorials/task-guide.html)
+- [联系译者](https://github.com/listen-lavender)
 

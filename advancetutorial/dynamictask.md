@@ -66,7 +66,7 @@ def compute_large_fibonacci(M):
 
 像所有Prefect信号一样，LOOP信号接受message和result关键字。但是，在这种情况下，结果将包含在**task_loop_result**键的上下文中，并且可在下一次循环迭代时可用（task_loop_count也可用，但此处不需要该信息）。
 
-### Putting the pieces together
+### 拼凑完整
 
 让我们以刚刚学到的内容为基础，将各部分放到一个实际的Prefect flow中。
 

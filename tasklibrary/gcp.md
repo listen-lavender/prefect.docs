@@ -30,7 +30,7 @@
 
 ### BigQueryStreamingInsert
 
-通过流API在Google BigQuery数据表中插入记录的task。
+通过flow API在Google BigQuery数据表中插入记录的task。
 
 [API参考文档](https://docs.prefect.io/api/latest/tasks/gcp.html#prefect-tasks-google-bigquery-bigquerystreaminginsert)
 

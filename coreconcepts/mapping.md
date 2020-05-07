@@ -24,7 +24,7 @@ assert reduced_result == 9
 
 Prefect的**map/reduce**版本比经典实现灵活得多。
 
-映射task时，Prefect会为其输入数据的每个元素自动创建task的副本。副本（称为子task）仅应用于该元素。这意味着映射的task实际上代表许多单个子task的计算。
+映射task时，Prefect会为其输入数据的每个元素自动创建task的实例。task实例仅应用于该元素。这意味着映射的task实际上代表许多单个task实例的计算。
 
 如果正常（非映射的）task依赖于映射task，则Prefect会自动应用规约操作以收集映射结果并将其传递给下游task。
 
@@ -48,9 +48,9 @@ assert state.result[reduced_result].result == 9
 ````
 
 > 
-> **动态生成的子task是一等公民的task**
+> **动态生成的task实例是一等公民的task**
 >
-> 即使用户没有明确创建它们，映射task的子task也是一等公民的Prefect task。它们可以执行正常task可以执行的任何操作，包括成功，失败，重试，暂停或跳过。
+> 即使用户没有明确创建它们，映射task的task实例也是一等公民的Prefect task。它们可以执行正常task可以执行的任何操作，包括成功，失败，重试，暂停或跳过。
 > 
 
 ## 简单映射（map）
@@ -121,7 +121,7 @@ with Flow('reduce') as flow:
 
 ## 未映射的输入
 
-当task映射到其输入上时，它将保留相同的调用签名和参数，但会在输入上进行迭代以生成其子task。有时，我们不想迭代其中一个输入，也许它是一个常量值，或者是需要的完整列表。为此，Prefect提供一个方便的**unmapped()**函数。
+当task映射到其输入上时，它将保留相同的调用签名和参数，但会在输入上进行迭代以生成其task实例。有时，我们不想迭代其中一个输入，也许它是一个常量值，或者是需要的完整列表。为此，Prefect提供一个方便的**unmapped()**函数。
 
 ````Python
 from prefect import Flow, task, unmapped

@@ -1,8 +1,8 @@
-用于实现控制流结构（如分支和重新加入流）的task和实用工具。
+用于实现控制流结构（如分支和重新加入flow）的task和实用工具。
 
 ### If/Else
 
-在工作流程中建立条件分支。
+在工作流中建立条件分支。
 
 如果条件评估为True（ish），则将运行**true_task**。如果它评估为False（ish），则将运行**false_task**。**Skipped**状态的task被跳过不执行，以及未设置**skip_on_upstream_skip=False**的所有下游task都会跳过。
 

@@ -176,7 +176,7 @@ task还具有一些不常见但重要的状态变迁模式。
 > Running -> Mapped
 > 
 
-如果task映射到其输入，则它将在运行后进入**Mapped**状态。这表明它没有做任何工作，而只是动态生成子task来执行映射的函数。子状态可以通过Mapped.map_states访问。**Mapped**是一种完成状态，它是**Success**的子类状态。
+如果task映射到其输入，则它将在运行后进入**Mapped**状态。这表明它没有做任何工作，而只是动态生成task实例来执行映射的函数。子状态可以通过Mapped.map_states访问。**Mapped**是一种完成状态，它是**Success**的子类状态。
 
 ***
 
